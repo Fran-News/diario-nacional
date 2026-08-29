@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>El Diario Nacional</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #e9e9e9;
+    color: #171717;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.browser {
+    background: #f4f4f4;
+    border-bottom: 1px solid #cfcfcf;
+    padding: 8px 10px 9px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.browser-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #555;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.browser-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.browser-buttons span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #c8c8c8;
+}
+
+.address-bar {
+    background: white;
+    border: 1px solid #d2d2d2;
+    border-radius: 7px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    color: #555;
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.lock {
+    margin-right: 6px;
+    font-size: 11px;
+}
+
+.site {
+    max-width: 850px;
+    margin: 0 auto;
+    background: white;
+    min-height: 100vh;
+}
+
+.header {
+    padding: 24px 24px 14px;
+    border-bottom: 1px solid #222;
+}
+
+.logo {
+    text-align: center;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(30px, 7vw, 54px);
+    font-weight: bold;
+    letter-spacing: -1.5px;
+}
+
+.tagline {
+    text-align: center;
+    color: #555;
+    font-size: 11px;
+    margin-top: 5px;
+    letter-spacing: .4px;
+}
+
+.nav {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    padding: 10px 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.nav span {
+    color: #333;
+}
+
+.article {
+    padding: 22px 24px 50px;
+}
+
+.category {
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 7vw, 58px);
+    line-height: 1.04;
+    letter-spacing: -1.5px;
+    margin: 0 0 15px;
+}
+
+.subtitle {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(17px, 3.8vw, 22px);
+    line-height: 1.4;
+    color: #3b3b3b;
+    margin-bottom: 17px;
+}
+
+.byline {
+    font-size: 11px;
+    color: #666;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-bottom: 18px;
+}
+
+.photo {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background:
+        linear-gradient(
+            135deg,
+            #d9d9d9 0%,
+            #eeeeee 45%,
+            #cfcfcf 46%,
+            #e6e6e6 100%
+        );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #777;
+    font-size: 13px;
+    position: relative;
+    overflow: hidden;
+}
+
+.photo::before {
+    content: "";
+    width: 65%;
+    height: 55%;
+    border-radius: 50%;
+    background: #c7c7c7;
+    position: absolute;
+    top: 18%;
+}
+
+.photo::after {
+    content: "";
+    width: 100%;
+    height: 45%;
+    background: #bdbdbd;
+    position: absolute;
+    bottom: -10%;
+    border-radius: 50% 50% 0 0;
+}
+
+.photo-label {
+    position: relative;
+    z-index: 2;
+    background: rgba(255,255,255,.85);
+    padding: 7px 10px;
+    font-size: 11px;
+}
+
+.caption {
+    font-size: 10px;
+    color: #777;
+    margin-top: 6px;
+    margin-bottom: 22px;
+}
+
+.article p {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 17px;
+    line-height: 1.72;
+    margin: 0 0 18px;
+}
+
+.article p strong {
+    font-weight: bold;
+}
+
+.quote {
+    border-left: 4px solid #222;
+    padding: 8px 18px;
+    margin: 24px 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 19px;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.chart {
+    margin: 28px 0;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.chart-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 14px;
+}
+
+.chart-number {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(36px, 8vw, 55px);
+    font-weight: bold;
+    line-height: 1;
+}
+
+.chart-unit {
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.bar-background {
+    height: 13px;
+    background: #dedede;
+    margin-top: 17px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    width: 72%;
+    background: #333;
+}
+
+.chart-note {
+    font-size: 10px;
+    color: #777;
+    margin-top: 7px;
+}
+
+.source-box {
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    font-size: 11px;
+    color: #666;
+}
+
+.source-link {
+    display: block;
+    margin-top: 7px;
+    color: #173f78;
+    text-decoration: underline;
+    word-break: break-all;
+}
+
+.share {
+    border-top: 1px solid #ddd;
+    margin-top: 25px;
+    padding-top: 15px;
+    font-size: 11px;
+    color: #777;
+}
+
+.footer {
+    background: #171717;
+    color: #aaa;
+    text-align: center;
+    padding: 25px 15px;
+    font-size: 10px;
+}
+
+@media (max-width: 600px) {
+
+    .header {
+        padding: 20px 16px 12px;
+    }
+
+    .article {
+        padding: 20px 17px 40px;
+    }
+
+    .nav {
+        gap: 15px;
+        justify-content: flex-start;
+        padding-left: 17px;
+    }
+
+    .article p {
+        font-size: 16px;
+        line-height: 1.65;
+    }
+
+    .quote {
+        font-size: 18px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="browser">
+
+    <div class="browser-top">
+        <div class="browser-buttons">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <span>Noticias</span>
+    </div>
+
+    <div class="address-bar">
+        <span class="lock">🔒</span>
+        www.sep-gobierno-mx.com
+    </div>
+
+</div>
+
+
+<div class="site">
+
+    <header class="header">
+
+        <div class="logo">
+            EL DIARIO NACIONAL
+        </div>
+
+        <div class="tagline">
+            Información · Economía · Educación · Gobierno
+        </div>
+
+    </header>
+
+
+    <nav class="nav">
+        <span>NACIONAL</span>
+        <span>ECONOMÍA</span>
+        <span>EDUCACIÓN</span>
+        <span>GOBIERNO</span>
+        <span>POLÍTICA</span>
+    </nav>
+
+
+    <main class="article">
+
+        <div class="category">
+            EDUCACIÓN
+        </div>
+
+
+        <h1>
+            Gobierno anuncia nuevo programa de apoyo económico para estudiantes
+        </h1>
+
+
+        <div class="subtitle">
+            El programa contempla apoyos de hasta $5,000 pesos mensuales para estudiantes de instituciones públicas a partir del próximo ciclo escolar.
+        </div>
+
+
+        <div class="byline">
+            <strong>Por Redacción Nacional</strong><br>
+            29 de febrero de 2026 · 10:42 h
+        </div>
+
+
+        <div class="photo">
+            <div class="photo-label">
+                FOTOGRAFÍA DE ARCHIVO
+            </div>
+        </div>
+
+
+        <div class="caption">
+            Estudiantes universitarios durante una jornada académica. Imagen ilustrativa.
+        </div>
+
+
+        <p>
+            La <strong>Secretaría de Educación Pública Federal</strong> anunció este sábado un nuevo programa de apoyo económico dirigido a estudiantes de instituciones públicas de educación media superior y superior.
+        </p>
+
+
+        <p>
+            De acuerdo con la dependencia, el programa busca reducir el impacto económico que enfrentan los estudiantes durante su formación académica y facilitar la continuidad de sus estudios.
+        </p>
+
+
+        <p>
+            Los beneficiarios podrán recibir <strong>hasta $5,000 pesos mensuales</strong>, dependiendo de su nivel educativo y situación económica.
+        </p>
+
+
+        <p>
+            El Gobierno Federal informó que el programa contará con una inversión inicial de <strong>$18,500 millones de pesos</strong> y que los recursos serán distribuidos de manera gradual entre las instituciones participantes.
+        </p>
+
+
+        <section class="chart">
+
+            <div class="chart-title">
+                Inversión destinada al programa
+            </div>
+
+            <div class="chart-number">
+                $15,800
+            </div>
+
+            <div class="chart-unit">
+                millones de pesos
+            </div>
+
+            <div class="bar-background">
+                <div class="bar"></div>
+            </div>
+
+            <div class="chart-note">
+                Recursos destinados al programa durante su primera etapa.
+            </div>
+
+        </section>
+
+
+        <p>
+            Las autoridades señalaron que los estudiantes interesados podrán consultar los requisitos y registrar su solicitud a través del portal oficial del programa.
+        </p>
+
+
+        <p>
+            El inicio de la distribución de los apoyos está previsto para <strong>septiembre de 2026</strong>, con una cobertura inicial en universidades y centros educativos públicos de todo el país.
+        </p>
+
+
+        <p>
+            Según información proporcionada por la dependencia, el programa beneficiará principalmente a estudiantes que presenten dificultades económicas y que mantengan su inscripción activa durante el ciclo escolar.
+        </p>
+
+
+        <p>
+            La convocatoria correspondiente al ciclo <strong>2025-2026</strong> contempla una etapa inicial de registro para instituciones participantes.
+        </p>
+
+
+        <div class="quote">
+            “El objetivo es que ningún estudiante tenga que abandonar sus estudios por motivos económicos”, señaló la dependencia.
+        </div>
+
+
+        <div class="source-box">
+
+            <strong>Más información y registro:</strong>
+
+            <span class="source-link">
+                www.sep-gobierno-mx.com
+            </span>
+
+            <br>
+
+            <strong>Fuente:</strong> Secretaría de Educación Pública Federal
+
+        </div>
+
+
+        <div class="share">
+            COMPARTIR &nbsp; · &nbsp; Facebook &nbsp; · &nbsp; X &nbsp; · &nbsp; WhatsApp &nbsp; · &nbsp; Copiar enlace
+        </div>
+
+    </main>
+
+
+    <footer class="footer">
+        © 2026 El Diario Nacional · Todos los derechos reservados
+    </footer>
+
+</div>
+
+</body>
+</html>
